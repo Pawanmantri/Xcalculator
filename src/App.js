@@ -15,6 +15,19 @@ const App = () => {
   };
 
   const handleEvaluate = () => {
+    // Check for empty input or single number case
+    if (/^\d+$/.test(input)) {
+      return;
+    }
+
+    // Check for division by zero
+    const containsDivideByZero = /\/0/.test(input);
+
+    if (containsDivideByZero) {
+      setResult('NaN');
+      return;
+    }
+
     try {
       const evaluatedResult = eval(input);
       setResult(evaluatedResult === Infinity ? 'NaN' : evaluatedResult);
