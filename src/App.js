@@ -15,22 +15,29 @@ const App = () => {
   };
 
   const handleEvaluate = () => {
-    // Check for empty input or single number case
-    if (/^\d+$/.test(input)) {
-      return;
-    }
-
-    // Check for division by zero
-    const containsDivideByZero = /\/0/.test(input);
-
-    if (containsDivideByZero) {
-      setResult('NaN');
+    if (!input) {
+      setResult('Error');
       return;
     }
 
     try {
+      // Check if the input is a single number
+      if (/^\d+$/.test(input)) {
+        setResult('Error');
+        return;
+      }
+
+      // Evaluate the expression
       const evaluatedResult = eval(input);
-      setResult(evaluatedResult === Infinity ? 'NaN' : evaluatedResult);
+
+      // Check for division by zero
+      if (evaluatedResult === Infinity) {
+        setResult('Infinity');
+      } else if (Number.isNaN(evaluatedResult)) {
+        setResult('NaN');
+      } else {
+        setResult(evaluatedResult);
+      }
     } catch (error) {
       setResult('Error');
     }
